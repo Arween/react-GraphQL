@@ -34,3 +34,4 @@ node_modules
 
 #database
 *.sqlite
+*.swp
