@@ -9782,6 +9782,14 @@ var _Authors = __webpack_require__(184);
 
 var _Authors2 = _interopRequireDefault(_Authors);
 
+var _Adder = __webpack_require__(189);
+
+var _Adder2 = _interopRequireDefault(_Adder);
+
+var _Menu = __webpack_require__(190);
+
+var _Menu2 = _interopRequireDefault(_Menu);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // ReactDOM.render(
@@ -9790,6 +9798,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // 		);
 _reactDom2.default.render(_react2.default.createElement(_Authors2.default, null), document.getElementById('root'));
+_reactDom2.default.render(_react2.default.createElement(_Adder2.default, null), document.getElementById('modals'));
+_reactDom2.default.render(_react2.default.createElement(_Menu2.default, null), document.getElementById('menudiv'));
 
 /***/ }),
 /* 83 */
@@ -22334,9 +22344,9 @@ var Authors = function (_React$Component) {
 		value: function getAuthors() {
 			var _this2 = this;
 
-			this.api.getAllAuthors().then(function (res) {
+			this.api.getAllAuthors().then(function (authors) {
 				console.log(_this2);
-				_this2.setState({ authors: res.data.authors });
+				_this2.setState({ authors: authors });
 			});
 		}
 	}, {
@@ -22420,7 +22430,6 @@ var Api = function () {
 			return instance;
 		} else {
 
-			console.log('Новый апи ');
 			this.url = url, this.type = type, instance = this;
 		}
 	}
@@ -22432,9 +22441,8 @@ var Api = function () {
 
 			return new Promise(function (resolve, reject) {
 				var v = '{authors {id firstname lastname posts{text title}}}';
-				console.log(_this.type);
 				(0, _ajaxModule.ajax)(_this.type, _this.url, v).then(function (res) {
-					return resolve(res);
+					return resolve(res.data.authors);
 				}).catch(function (err) {
 					return reject(err);
 				});
@@ -22632,6 +22640,349 @@ var Posts = function (_React$Component) {
 ;
 
 exports.default = Posts;
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+				value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(49);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _apiModule = __webpack_require__(185);
+
+var _apiModule2 = _interopRequireDefault(_apiModule);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Adder = function (_React$Component) {
+				_inherits(Adder, _React$Component);
+
+				function Adder(props) {
+								_classCallCheck(this, Adder);
+
+								var _this = _possibleConstructorReturn(this, (Adder.__proto__ || Object.getPrototypeOf(Adder)).call(this, props));
+
+								_this.api = new _apiModule2.default();
+								_this.state = {
+												authors: [],
+												chosen_author: '',
+												new_title: '',
+												new_text: ''
+								};
+								return _this;
+				}
+
+				_createClass(Adder, [{
+								key: 'close_modal',
+								value: function close_modal() {
+												var modal = document.getElementById('myModal');
+												modal.style.display = 'none';
+								}
+				}, {
+								key: 'getAuthors',
+								value: function getAuthors() {
+												var _this2 = this;
+
+												this.api.getAllAuthors().then(function (authors) {
+																console.log(1);
+																console.log(authors);
+																_this2.setState({ authors: authors });
+																_this2.create_options();
+												});
+								}
+				}, {
+								key: 'componentDidMount',
+								value: function componentDidMount() {
+												this.getAuthors();
+								}
+				}, {
+								key: 'choose_author',
+								value: function choose_author(e) {
+												console.log(e.target.value);
+												this.setState({ chosen_author: e.target.value });
+								}
+				}, {
+								key: 'add_title',
+								value: function add_title(e) {
+												this.setState({ new_title: e.target.value });
+								}
+				}, {
+								key: 'create_options',
+								value: function create_options() {
+
+												var options = this.state.authors.map(function (item, idx) {
+																return _react2.default.createElement(
+																				'option',
+																				{ value: item.id, key: idx },
+																				item.firstname,
+																				' ',
+																				item.lastname
+																);
+												});
+												this.setState({ options: options });
+								}
+				}, {
+								key: 'add_text',
+								value: function add_text(e) {
+												var new_text = e.target.value;
+												this.setState({ new_text: new_text });
+								}
+				}, {
+								key: 'create_article',
+								value: function create_article(e) {
+												console.log('creating...');
+								}
+				}, {
+								key: 'render',
+								value: function render() {
+
+												return _react2.default.createElement(
+																'div',
+																{ className: 'modal ', style: { display: 'none' }, id: 'myModal', tabIndex: '-1', role: 'dialog', 'aria-labelledby': 'myModalLabel' },
+																_react2.default.createElement(
+																				'div',
+																				{ className: 'modal-dialog modal-lg', role: 'document' },
+																				_react2.default.createElement(
+																								'div',
+																								{ className: 'modal-content' },
+																								_react2.default.createElement(
+																												'div',
+																												{ className: 'modal-header' },
+																												_react2.default.createElement(
+																																'button',
+																																{ onClick: this.close_modal, className: 'close', 'aria-label': 'Close' },
+																																_react2.default.createElement(
+																																				'span',
+																																				{ 'aria-hidden': 'true' },
+																																				'\xD7'
+																																)
+																												),
+																												_react2.default.createElement(
+																																'h4',
+																																{ className: 'modal-title', id: 'myModalLabel' },
+																																'New article creation'
+																												)
+																								),
+																								_react2.default.createElement(
+																												'div',
+																												{ className: 'modal-body' },
+																												_react2.default.createElement(
+																																'div',
+																																{ className: 'panel panel-default' },
+																																_react2.default.createElement(
+																																				'div',
+																																				{ className: 'panel-heading' },
+																																				_react2.default.createElement(
+																																								'h5',
+																																								null,
+																																								'Common info'
+																																				)
+																																),
+																																_react2.default.createElement(
+																																				'div',
+																																				{ className: 'panel-body' },
+																																				_react2.default.createElement(
+																																								'form',
+																																								{ className: 'form-inline' },
+																																								_react2.default.createElement(
+																																												'div',
+																																												{ className: 'row' },
+																																												_react2.default.createElement(
+																																																'div',
+																																																{ className: 'col-sm-5' },
+																																																_react2.default.createElement(
+																																																				'div',
+																																																				{ className: 'form-group' },
+																																																				_react2.default.createElement(
+																																																								'label',
+																																																								{ htmlFor: 'exampleInputName2' },
+																																																								'Who?'
+																																																				),
+																																																				_react2.default.createElement(
+																																																								'select',
+																																																								{ onChange: this.choose_author.bind(this), value: this.state.chosen_author, id: 'sel' },
+																																																								this.state.options
+																																																				)
+																																																)
+																																												),
+																																												_react2.default.createElement(
+																																																'div',
+																																																{ className: 'col-sm-5 col-sm-offset-1' },
+																																																_react2.default.createElement(
+																																																				'div',
+																																																				{ className: 'input-group' },
+																																																				_react2.default.createElement('input', { onChange: this.add_title.bind(this), type: 'text', className: 'form-control', id: 'exampleInputAmount', placeholder: 'Enter title' })
+																																																)
+																																												)
+																																								)
+																																				)
+																																)
+																												),
+																												_react2.default.createElement(
+																																'div',
+																																{ className: 'panel panel-default' },
+																																_react2.default.createElement(
+																																				'div',
+																																				{ className: 'panel-heading' },
+																																				_react2.default.createElement(
+																																								'h5',
+																																								null,
+																																								'The New Article'
+																																				)
+																																),
+																																_react2.default.createElement(
+																																				'div',
+																																				{ className: 'panel-body' },
+																																				_react2.default.createElement(
+																																								'form',
+																																								{ className: 'form-inline' },
+																																								_react2.default.createElement(
+																																												'div',
+																																												{ className: 'row' },
+																																												_react2.default.createElement(
+																																																'div',
+																																																{ className: 'col-sm-12' },
+																																																_react2.default.createElement(
+																																																				'div',
+																																																				{ className: 'input-group' },
+																																																				_react2.default.createElement('textarea', { id: 'txt', onChange: this.add_text.bind(this), rows: '10', cols: '125', value: this.state.new_text })
+																																																)
+																																												)
+																																								)
+																																				)
+																																)
+																												)
+																								),
+																								_react2.default.createElement(
+																												'div',
+																												{ className: 'modal-footer' },
+																												_react2.default.createElement(
+																																'button',
+																																{ type: 'button', onClick: this.close_modal, className: 'btn btn-default', 'data-dismiss': 'modal' },
+																																'\u041E\u0442\u043C\u0435\u043D\u0430'
+																												),
+																												_react2.default.createElement(
+																																'button',
+																																{ type: 'button', onClick: this.create_article.bind(this), className: 'btn btn-primary' },
+																																'Create'
+																												)
+																								)
+																				)
+																)
+												);
+								}
+				}]);
+
+				return Adder;
+}(_react2.default.Component);
+
+;
+
+exports.default = Adder;
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(49);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Menu = function (_React$Component) {
+	_inherits(Menu, _React$Component);
+
+	function Menu(props) {
+		_classCallCheck(this, Menu);
+
+		return _possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, props));
+	}
+
+	_createClass(Menu, [{
+		key: 'show_modal',
+		value: function show_modal() {
+			var modal = document.getElementById('myModal').style.display = 'block';
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var name = '${ARTICLES}';
+			return _react2.default.createElement(
+				'nav',
+				{ className: 'navbar navbar-default navbar-static-top fix' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'container' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'navbar-header' },
+						_react2.default.createElement(
+							'a',
+							{ className: 'navbar-brand' },
+							name
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'app-navbar-collapse' },
+						_react2.default.createElement('ul', { className: 'nav navbar-nav' }),
+						_react2.default.createElement(
+							'ul',
+							{ className: 'nav navbar-nav navbar-right' },
+							_react2.default.createElement(
+								'li',
+								{ style: { marginTop: 10 + 'px' } },
+								_react2.default.createElement(
+									'button',
+									{ className: 'btn btn-default', onClick: this.show_modal },
+									_react2.default.createElement('span', { className: 'glyphicon glyphicon-plus', 'aria-hidden': 'true' })
+								)
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Menu;
+}(_react2.default.Component);
+
+;
+
+exports.default = Menu;
 
 /***/ })
 /******/ ]);

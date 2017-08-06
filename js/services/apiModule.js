@@ -6,7 +6,6 @@ export default class Api {
 			return instance;
 		}else {
 			
-			console.log('Новый апи ')
 			this.url = url,
 			this.type = type,
 			instance = this
@@ -18,8 +17,7 @@ export default class Api {
 	getAllAuthors() {
 		return new Promise((resolve, reject) => {
 			const v = '{authors {id firstname lastname posts{text title}}}';
-			console.log(this.type);
-			ajax(this.type, this.url, v).then((res) => resolve(res)).catch((err) => reject(err));
+			ajax(this.type, this.url, v).then((res) => resolve(res.data.authors)).catch((err) => reject(err));
 		})
 	}
 }

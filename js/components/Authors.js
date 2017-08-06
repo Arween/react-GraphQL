@@ -17,9 +17,9 @@ class Authors extends React.Component {
 
 
 	getAuthors() {
-		this.api.getAllAuthors().then((res) => {
+		this.api.getAllAuthors().then((authors) => {
 			console.log(this);
-			this.setState({authors: res.data.authors});
+			this.setState({authors});
 		});
 	}
 	render() {
