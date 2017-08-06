@@ -7,7 +7,7 @@ class Adder extends React.Component {
 		this.api = new Api();
 		this.state = {
 			authors: [],
-			chosen_author: '',
+			chosen_author: 1,
 			new_title: '',
 			new_text: ''
 		} 
@@ -57,6 +57,7 @@ class Adder extends React.Component {
 
 	create_article(e) {
 		console.log('creating...');
+		this.api.create_article({author_id:this.state.chosen_author, text: this.state.new_text, title: this.state.new_title}).then(() => {this.getAuthors(); this.close_modal()});
 	}
 
 

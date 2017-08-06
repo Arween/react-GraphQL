@@ -20,4 +20,12 @@ export default class Api {
 			ajax(this.type, this.url, v).then((res) => resolve(res.data.authors)).catch((err) => reject(err));
 		})
 	}
+
+	create_article(data) {
+		return new Promise((resolve, reject) => {
+			const v = `mutation {  addArticle(author_id: ${data.author_id}, text: "${data.text}", title: "${data.title}") {    text    title   } }`;
+			console.log(v);
+			ajax(this.type, this.url, v).then((res) => resolve(res.data.addArticle)).catch((err) => reject(err));
+		});
+	}
 }

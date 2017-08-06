@@ -22448,6 +22448,21 @@ var Api = function () {
 				});
 			});
 		}
+	}, {
+		key: 'create_article',
+		value: function create_article(data) {
+			var _this2 = this;
+
+			return new Promise(function (resolve, reject) {
+				var v = 'mutation {  addArticle(author_id: ' + data.author_id + ', text: "' + data.text + '", title: "' + data.title + '") {    text    title   } }';
+				console.log(v);
+				(0, _ajaxModule.ajax)(_this2.type, _this2.url, v).then(function (res) {
+					return resolve(res.data.addArticle);
+				}).catch(function (err) {
+					return reject(err);
+				});
+			});
+		}
 	}]);
 
 	return Api;
@@ -22681,7 +22696,7 @@ var Adder = function (_React$Component) {
 								_this.api = new _apiModule2.default();
 								_this.state = {
 												authors: [],
-												chosen_author: '',
+												chosen_author: 1,
 												new_title: '',
 												new_text: ''
 								};
@@ -22746,7 +22761,12 @@ var Adder = function (_React$Component) {
 				}, {
 								key: 'create_article',
 								value: function create_article(e) {
+												var _this3 = this;
+
 												console.log('creating...');
+												this.api.create_article({ author_id: this.state.chosen_author, text: this.state.new_text, title: this.state.new_title }).then(function () {
+																_this3.getAuthors();_this3.close_modal();
+												});
 								}
 				}, {
 								key: 'render',
