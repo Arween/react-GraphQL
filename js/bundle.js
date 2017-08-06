@@ -9778,9 +9778,9 @@ var _reactDom = __webpack_require__(98);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _Welcome = __webpack_require__(184);
+var _Authors = __webpack_require__(184);
 
-var _Welcome2 = _interopRequireDefault(_Welcome);
+var _Authors2 = _interopRequireDefault(_Authors);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9789,7 +9789,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // 		    document.getElementById('root')
 
 // 		);
-_reactDom2.default.render(_react2.default.createElement(_Welcome2.default, null), document.getElementById('root'));
+_reactDom2.default.render(_react2.default.createElement(_Authors2.default, null), document.getElementById('root'));
 
 /***/ }),
 /* 83 */
@@ -22295,6 +22295,10 @@ var _react = __webpack_require__(49);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _apiModule = __webpack_require__(185);
+
+var _apiModule2 = _interopRequireDefault(_apiModule);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22303,36 +22307,170 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Welcome = function (_React$Component) {
-	_inherits(Welcome, _React$Component);
+var Authors = function (_React$Component) {
+	_inherits(Authors, _React$Component);
 
-	function Welcome(props) {
-		_classCallCheck(this, Welcome);
+	function Authors(props) {
+		_classCallCheck(this, Authors);
 
-		var _this = _possibleConstructorReturn(this, (Welcome.__proto__ || Object.getPrototypeOf(Welcome)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Authors.__proto__ || Object.getPrototypeOf(Authors)).call(this, props));
 
-		_this.state = { name: "Sergey" };
+		_this.api = new _apiModule2.default();
+		_this.state = {
+			name: "Sergey",
+			authors: []
+		};
+		_this.getAuthors();
+
 		return _this;
 	}
 
-	_createClass(Welcome, [{
-		key: "render",
+	_createClass(Authors, [{
+		key: 'getAuthors',
+		value: function getAuthors() {
+			var _this2 = this;
+
+			this.api.getAllAuthors().then(function (res) {
+				console.log(_this2);
+				_this2.setState({ authors: res.data.authors });
+			});
+		}
+	}, {
+		key: 'render',
 		value: function render() {
+			var listAuthors = this.state.authors.map(function (author) {
+				return _react2.default.createElement(
+					'li',
+					{ className: 'list-group-item', key: author.id },
+					_react2.default.createElement(
+						'a',
+						null,
+						author.firstname,
+						' ',
+						author.lastname
+					)
+				);
+			});
 			return _react2.default.createElement(
-				"h1",
+				'div',
 				null,
-				"Hello, ",
-				this.state.name
+				_react2.default.createElement(
+					'div',
+					{ className: 'panel-heading' },
+					'Our Authors'
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'panel-body' },
+					_react2.default.createElement(
+						'ul',
+						{ className: 'list-group' },
+						listAuthors
+					)
+				)
 			);
 		}
 	}]);
 
-	return Welcome;
+	return Authors;
 }(_react2.default.Component);
 
 ;
 
-exports.default = Welcome;
+exports.default = Authors;
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ajaxModule = __webpack_require__(186);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var instance = void 0;
+
+var Api = function () {
+	function Api() {
+		var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/graphql';
+		var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'POST';
+
+		_classCallCheck(this, Api);
+
+		if (instance) {
+			return instance;
+		} else {
+
+			console.log('Новый апи ');
+			this.url = url, this.type = type, instance = this;
+		}
+	}
+
+	_createClass(Api, [{
+		key: 'getAllAuthors',
+		value: function getAllAuthors() {
+			var _this = this;
+
+			return new Promise(function (resolve, reject) {
+				var v = '{authors {id firstname lastname posts{text title}}}';
+				console.log(_this.type);
+				(0, _ajaxModule.ajax)(_this.type, _this.url, v).then(function (res) {
+					return resolve(res);
+				}).catch(function (err) {
+					return reject(err);
+				});
+			});
+		}
+	}]);
+
+	return Api;
+}();
+
+exports.default = Api;
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ajax = ajax;
+function ajax(type) {
+    var url = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '/graphql';
+    var val = arguments[2];
+
+    return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        var body = JSON.stringify({ 'query': val });
+        console.log(body);
+        xhr.open(type, url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.send(body);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                resolve(JSON.parse(this.response));
+            };
+            if (this.status != 200) {
+                console.log('ошибка: ' + (this.status ? this.statusText : 'запрос не удался'));
+                reject(this.status ? this.statusText : 'запрос не удался');
+                //	return;
+            };
+        };
+    });
+}
 
 /***/ })
 /******/ ]);

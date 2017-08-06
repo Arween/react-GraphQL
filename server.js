@@ -10,6 +10,8 @@ const graphQLServer = express();
 graphQLServer.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 graphQLServer.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 graphQLServer.use('/js', express.static(__dirname +'/js'));
+graphQLServer.use('/css', express.static(__dirname +'/css'));
+graphQLServer.use('/fonts', express.static(__dirname +'/fonts'));
 
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(
   `GraphiQL is now running on http://localhost:${GRAPHQL_PORT}/graphiql`

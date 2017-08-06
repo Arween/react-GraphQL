@@ -24,6 +24,7 @@ type Post {
 type Query {
 	author(firstname: String, lastname: String): Author 
 	posts: Post
+	authors: [Author]
 }
 `;
 

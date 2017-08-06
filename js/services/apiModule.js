@@ -1,49 +1,25 @@
 import { ajax } from './ajaxModule';
-
+let instance;
 export default class Api {
-	constructor(url = 'php/apiNew.php', type = 'POST') {
-		this.url = url,
-		this.type = type,
-		this.methods = {
-			addBid: 'dbsetter.addBid',
-			getInfo: 'dbgetter.getInfo',
-			getBidInfo: 'dbgetter.getBidInfo',
-			changeStatus: 'dbsetter.changeStatus',
-			getTableMaps: 'dbgetter.getTableMaps',
-			checkHash: 'auth.checkHashClient'
+	constructor(url = '/graphql', type = 'POST') {
+		if(instance) {
+			return instance;
+		}else {
+			
+			console.log('Новый апи ')
+			this.url = url,
+			this.type = type,
+			instance = this
 		}
+
 	}
 
 	
-	static addBid(v) {
+	getAllAuthors() {
 		return new Promise((resolve, reject) => {
-			ajax(this.type, this.url, this.methods.addBid, v).then(resolve(res)).catch(reject(err));
-		})
-	}
-	getInfo(v) {
-		console.log(this);
-		return new Promise((resolve, reject) => {
-			ajax(this.type, this.url, this.methods.getInfo, v).then(resolve(res)).catch(reject(err));
-		})
-	}
-	static getBidInfo(v) {
-		return new Promise((resolve, reject) => {
-			ajax(this.type, this.url, this.methods.getBidInfo, v).then(resolve(res)).catch(reject(err));
-		})
-	}
-	static changeStatus(v) {
-		return new Promise((resolve, reject) => {
-			ajax(this.type, this.url, this.methods.changeStatus, v).then(resolve(res)).catch(reject(err));
-		})
-	}
-	static getTableMaps(v) {
-		return new Promise((resolve, reject) => {
-			ajax(this.type, this.url, this.methods.getTableMaps, v).then(resolve(res)).catch(reject(err));
-		})
-	}
-	static checkHash(v) {
-		return new Promise((resolve, reject) => {
-			ajax(this.type, this.url, this.methods.checkHash, v).then(resolve(res)).catch(reject(err));
+			const v = '{authors {id firstname lastname posts{text title}}}';
+			console.log(this.type);
+			ajax(this.type, this.url, v).then((res) => resolve(res)).catch((err) => reject(err));
 		})
 	}
 }

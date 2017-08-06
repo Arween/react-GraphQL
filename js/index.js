@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Welcome from './components/Welcome';
+import Authors from './components/Authors';
 
 // ReactDOM.render(
 // 		  <h1>Hello, world!</h1>,
@@ -8,7 +8,7 @@ import Welcome from './components/Welcome';
 
 // 		);
 ReactDOM.render(
-		  <Welcome />,
+		  <Authors />,
 		    document.getElementById('root')
 
 		);
