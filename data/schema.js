@@ -26,6 +26,10 @@ type Query {
 	posts: Post
 	authors: [Author]
 }
+
+type Mutation {
+	  addArticle(author_id: Int!, title: String!, text: String!): Post
+}
 `;
 
 const schema = makeExecutableSchema({ typeDefs });

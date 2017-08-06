@@ -3,7 +3,7 @@ import casual from 'casual';
 
 
 const mocks = {
-  String: () => 'It works!',
+  // String: () => 'It works!',
   Query: () => ({
 	  author: (root, args) => {
 		  return {firstname: args.firstname, lastname: args.lastname}
