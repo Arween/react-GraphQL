@@ -118,7 +118,7 @@ class Adder extends React.Component {
 
                 </div>
                 <div className="modal-footer">
-                    <button type="button" onClick={this.close_modal}  className="btn btn-default" data-dismiss="modal">Отмена</button>
+                    <button type="button" onClick={this.close_modal}  className="btn btn-default" data-dismiss="modal">Cancel</button>
                     <button type="button" onClick={this.create_article.bind(this)} className="btn btn-primary">Create</button>
                 </div>
             </div>

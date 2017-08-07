@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon ./server.js --exec babel-node",
     "test": "mocha",
-    "lint": "eslint ."
+    "lint": "eslint .",
+	"mtest": "mocha --require ./tests/setup.js --compilers js:babel-core/register ./test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -52,9 +53,14 @@
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-import": "^1.1.0",
     "eslint-plugin-react": "^4.2.3",
+    "expect": "^1.20.2",
+    "fetch-mock": "^5.12.1",
     "graphql": "^0.10.0",
+    "jsdom": "^11.1.0",
     "mocha": "^3.5.0",
+    "mocha-loader": "^1.1.1",
     "nodemon": "^1.9.1",
+    "react-addons-test-utils": "^15.6.0",
     "webpack": "^3.4.1"
   },
   "peerDependencies": {

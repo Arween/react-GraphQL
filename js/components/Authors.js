@@ -7,6 +7,7 @@ class Authors extends React.Component {
 	constructor(props) {
 		super(props);
 		this.api = new Api();
+		this.getAuthors = this.getAuthors.bind(this);
 		this.state  = {
 			name: "Sergey",
 			authors: []

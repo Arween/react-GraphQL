@@ -22330,6 +22330,7 @@ var Authors = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Authors.__proto__ || Object.getPrototypeOf(Authors)).call(this, props));
 
 		_this.api = new _apiModule2.default();
+		_this.getAuthors = _this.getAuthors.bind(_this);
 		_this.state = {
 			name: "Sergey",
 			authors: []
@@ -22895,7 +22896,7 @@ var Adder = function (_React$Component) {
 																												_react2.default.createElement(
 																																'button',
 																																{ type: 'button', onClick: this.close_modal, className: 'btn btn-default', 'data-dismiss': 'modal' },
-																																'\u041E\u0442\u043C\u0435\u043D\u0430'
+																																'Cancel'
 																												),
 																												_react2.default.createElement(
 																																'button',
